@@ -11,8 +11,8 @@ NEXIS 서버 프로그램 코드입니다. 에이전트로 부터 CPU, Memory �
  
 | OS | 링크 |
 |---|---|
-| Windows | [다운로드](https://drive.google.com/file/d/1kyUYE_nKScJxLZoUGiVUjbbCBMREHt7x/view?usp=drive_link) |
-| Linux | [다운로드](https://drive.google.com/file/d/1eOw2V505TxieqwWi-npolaVeRTFnb6bn/view?usp=drive_link) |
+| Windows | [NexisServer_Setup_v1.exe](https://drive.google.com/file/d/1svs0As39z-SBRNtI2SsdqWU_o20I4b0d/view?usp=drive_link) |
+| Linux | [nexis-server-1.0-1.noarch.rpm]([https://drive.google.com/file/d/1eOw2V505TxieqwWi-npolaVeRTFnb6bn/view?usp=drive_link](https://drive.google.com/file/d/1QTmhpOjlLXt1Eh8XtWLFq1aCMuTertFZ/view?usp=drive_link)) |
  
 <br><br>
 
@@ -88,8 +88,8 @@ systemctl status nexis-server
 
 | OS | 파일 | 크기 |
 |---|---|---|
-| Windows | `NexisAgent_Setup_v1.exe` | 11.77MB |
-| Linux | `nexis-agent-1.0-1.noarch.rpm` | 9.12MB |
+| Windows | `NexisAgent_Setup_v1.exe`(https://drive.google.com/file/d/1uwpLPXGDY1xVOgcxXNGs-edRo4p2DKEF/view?usp=drive_link) | 11.77MB |
+| Linux | `nexis-agent-1.0-1.noarch.rpm`(https://drive.google.com/file/d/1R7kihlhjY92bqKpG3fyyh-onbnCtUh77/view?usp=drive_link) | 9.12MB |
 
 <br><br>
 
