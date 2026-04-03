@@ -88,8 +88,8 @@ systemctl status nexis-server
 
 | OS | 파일 | 크기 |
 |---|---|---|
-| Windows | `NexisAgent_Setup_v1.exe`(https://drive.google.com/file/d/1uwpLPXGDY1xVOgcxXNGs-edRo4p2DKEF/view?usp=drive_link) | 11.77MB |
-| Linux | `nexis-agent-1.0-1.noarch.rpm`(https://drive.google.com/file/d/1R7kihlhjY92bqKpG3fyyh-onbnCtUh77/view?usp=drive_link) | 9.12MB |
+| Windows | [`NexisAgent_Setup_v1.exe`](https://drive.google.com/file/d/1uwpLPXGDY1xVOgcxXNGs-edRo4p2DKEF/view?usp=drive_link) | 11.77MB |
+| Linux | [`nexis-agent-1.0-1.noarch.rpm`](https://drive.google.com/file/d/1R7kihlhjY92bqKpG3fyyh-onbnCtUh77/view?usp=drive_link) | 9.12MB |
 
 <br><br>
 
