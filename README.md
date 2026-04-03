@@ -75,6 +75,7 @@ systemctl status nexis-server
 6. 설치 시 지정한 경로에서 로그 확인 가능
 
 ---
+<br><br>
 
 **NEXIS Monitoring Platform - Agent**
 
