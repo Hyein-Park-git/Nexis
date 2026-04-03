@@ -14,8 +14,9 @@
  
 <br><br>
 
-## 💾 설치 방법 (Windows)
+## 설치 방법 (Windows)
 > 자세한 내용은 [티스토리 참조](https://hailey-p.tistory.com/20)
+
 
 1. `NexisServer_Setup_v1.exe` 실행 *(관리자 권한으로 실행)*
 
@@ -49,7 +50,7 @@
 
 ---
 
-## 💾 설치 방법 (Linux)
+## 설치 방법 (Linux)
 
 1. `nexis-server-1.0-1.noarch.rpm` 파일 확인
 
