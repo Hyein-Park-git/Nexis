@@ -1,0 +1,93 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example.nexis'
+version = '1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':lib')
+
+    // Spring Boot JPA (기존)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // DB 드라이버 (기존)
+    implementation 'com.h2database:h2'
+    implementation 'com.mysql:mysql-connector-j'
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.postgresql:postgresql'
+
+    // ---------------------------
+    // JSON 처리용 라이브러리 추가
+    // ---------------------------
+    implementation 'org.json:json:20230227'
+}
+
+// -------------------- 서버용 BootJar --------------------
+bootJar {
+    archiveBaseName.set('Nexis_Server')
+    archiveVersion.set('1.0')
+    mainClass.set('com.example.nexis.server.ServerApplication')
+}
+
+// -------------------- RPM 빌드 --------------------
+task buildRpm(dependsOn: bootJar) {
+    doLast {
+        def rpmRoot   = "$buildDir/rpm"
+        def specDir   = "$rpmRoot/SPECS"
+        def sourceDir = "$rpmRoot/SOURCES"
+
+        file(specDir).mkdirs()
+        file(sourceDir).mkdirs()
+
+        // 서버 jar 복사
+        copy {
+            from bootJar.archiveFile.get().asFile
+            into sourceDir
+            rename { 'Nexis_Server.jar' }
+        }
+
+        // 리소스 CRLF → LF 변환
+        copy {
+            from 'src/main/resources/rpm'
+            into sourceDir
+            filter { line -> line }
+        }
+
+        // spec 파일 복사
+        copy {
+            from "$sourceDir/nexis-server.spec"
+            into specDir
+        }
+
+        // rpmbuild 실행
+        exec {
+            commandLine 'rpmbuild',
+                    '--define', "_topdir $rpmRoot",
+                    '--define', "_sourcedir $sourceDir",
+                    '-bb',
+                    "$specDir/nexis-server.spec"
+        }
+
+        // 생성된 RPM 배포 디렉토리로 복사
+        copy {
+            from fileTree("$rpmRoot/RPMS").matching { include '**/*.rpm' }
+            into "$buildDir/distributions"
+            includeEmptyDirs = false
+        }
+
+        println "[buildRpm] RPM created: $buildDir/distributions/"
+    }
+}

@@ -1,0 +1,127 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.example.nexis'
+version = '1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation 'com.github.oshi:oshi-core:6.4.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+}
+
+// -------------------- Windows / Linux 통합 단일 JAR --------------------
+shadowJar {
+    archiveBaseName.set('Nexis_Agent')
+    archiveVersion.set('1.0')
+    archiveClassifier.set('')
+
+    manifest {
+        attributes(
+            'Main-Class': 'com.example.nexis.agent.AgentApplication'
+        )
+    }
+}
+
+jar {
+    enabled = false
+}
+
+tasks.build {
+    dependsOn shadowJar
+}
+
+// -------------------- RPM --------------------
+task buildRpm(dependsOn: shadowJar) {
+    doLast {
+        def rpmRoot   = "$buildDir/rpm"
+        def specDir   = "$rpmRoot/SPECS"
+        def sourceDir = "$rpmRoot/SOURCES"
+
+        file(specDir).mkdirs()
+        file(sourceDir).mkdirs()
+
+        copy {
+            from shadowJar.archiveFile.get().asFile
+            into sourceDir
+            rename { 'Nexis_Agent.jar' }
+        }
+
+        // 텍스트 파일은 CRLF → LF 변환하여 복사
+        copy {
+            from 'src/main/resources/rpm'
+            into sourceDir
+            filter { line -> line }  // CRLF → LF 자동 변환
+        }
+
+        copy {
+            from "$sourceDir/nexis-agent.spec"
+            into specDir
+        }
+
+        exec {
+            commandLine 'rpmbuild',
+                '--define', "_topdir $rpmRoot",
+                '--define', "_sourcedir $sourceDir",
+                '-bb',
+                "$specDir/nexis-agent.spec"
+        }
+
+        copy {
+            from fileTree("$rpmRoot/RPMS").matching { include '**/*.rpm' }
+            into "$buildDir/distributions"
+            includeEmptyDirs = false
+        }
+
+        println "[buildRpm] RPM created: $buildDir/distributions/"
+    }
+}
+// ==================== Windows 전용 태스크 (현재 미사용 - 필요 시 주석 해제) ====================
+//
+// task shadowJarWindows(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+//     from sourceSets.main.output
+//     configurations = [project.configurations.runtimeClasspath]
+//
+//     archiveBaseName.set('agent-windows')
+//     archiveVersion.set('1.0')
+//     archiveClassifier.set('')
+//
+//     manifest {
+//         attributes(
+//             'Main-Class': 'com.example.nexis.agent.platform.windows.WindowsTrayApp'
+//         )
+//     }
+// }
+//
+// task shadowJarLinux(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+//     from sourceSets.main.output
+//     configurations = [project.configurations.runtimeClasspath]
+//
+//     archiveBaseName.set('agent-linux')
+//     archiveVersion.set('1.0')
+//     archiveClassifier.set('')
+//
+//     manifest {
+//         attributes(
+//             'Main-Class': 'com.example.nexis.agent.platform.linux.LinuxServiceApp'
+//         )
+//     }
+// }
+//
+// tasks.build {
+//     dependsOn shadowJarWindows, shadowJarLinux
+// }
+// ====================================================================================

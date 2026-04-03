@@ -1,0 +1,2 @@
+rootProject.name = 'nexis'
+include 'agent', 'lib', 'server'

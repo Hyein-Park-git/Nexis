@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.example.nexis'
+version = '1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation 'com.github.oshi:oshi-core:6.4.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+}
+
+shadowJar {
+    archiveBaseName.set('Nexis_Agent')
+    archiveVersion.set('1.0')
+    archiveClassifier.set('')
+
+    manifest {
+        attributes(
+            'Main-Class': 'com.example.nexis.agent.AgentApplication'
+        )
+    }
+}
+
+// 기본 jar 태스크 비활성화 - shadowJar만 생성
+jar {
+    enabled = false
+}
+
+tasks.build {
+    dependsOn shadowJar
+}

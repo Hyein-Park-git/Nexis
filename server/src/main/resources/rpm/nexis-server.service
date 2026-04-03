@@ -1,0 +1,15 @@
+[Unit]
+Description=Nexis Server - System Metrics Collection Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/nexis-server/nexis-server.sh
+WorkingDirectory=/opt/nexis-server
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
