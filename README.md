@@ -84,7 +84,7 @@ systemctl status nexis-server
 
 ---
 
-## 파일 다운로드
+## 설치 파일 다운로드
 
 | OS | 파일 | 크기 |
 |---|---|---|
