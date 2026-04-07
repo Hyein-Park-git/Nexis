@@ -77,7 +77,7 @@ systemctl status nexis-server
 
 ## NEXIS Monitoring Platform - Agent
 
-설치된 호스트의 CPU, Memory 등의 자원 사용량 데이터를 서버로 송신하는 에이전트 프로그램 코드입니다.
+설치된 호스트의 CPU, Memory 등의 자원 사용량 데이터를 서버로 송신하는 에이전트 프로그램입니다.
 <br><br>
 
 ---
